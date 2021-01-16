@@ -18,7 +18,7 @@ The following actions can be applied. They are executed in the order they are sp
 ```
 -a "f;filename.pdf;key=value,name=prename,id=4711"
 ```
-The comma charactor (,) is a separator of key value pairs. If a comma is required in either a key or a value it has to be escaped by backslash (\\,).
+The comma character (,) is a separator of key value pairs. If a comma is required in either a key or a value it has to be escaped by backslash (\\,).
 
 The equal character (=) is a separator of key and value. If a equal character is required in either a key or value it has to be escaped by backslash (\\=).
 
