@@ -36,6 +36,8 @@ jar {
 	}
 }
 
+compileJava.dependsOn clean
+
 task copyRuntimeLibs(type: Copy, group: 'build', description: 'Exports dependencies.') {
     dependsOn jar
 	into "${buildDir}/libs"
