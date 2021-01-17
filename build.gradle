@@ -53,6 +53,6 @@ task copyTestData(type: Copy, group: 'build', description: 'Exports dependencies
 task generateRunBat(group: 'build', description: 'Generates a example executable.')  {
     dependsOn copyTestData
     doLast {
-        new File("$buildDir/run.bat").text = '@echo off\r\njava -Dlogdir=log -cp libs\\* goa.systems.pdfmerge.App -s "testdata" -a "e;e1.pdf;1" -a "e;e1.pdf;2" -a "f;e2.pdf;field1=My name is" -d "." -f "goal.pdf"'
+        new File("$buildDir/run.bat").text = '@echo off\r\njava -Dlogdir=log -cp libs\\* goa.systems.pdfmerge.App -s "testdata" -a "e;e1.pdf;1" -a "e;e1.pdf;2" -a "f;e2.pdf;name=CONV04711,year=2021" -d "." -f "goal.pdf"'
     }
 }

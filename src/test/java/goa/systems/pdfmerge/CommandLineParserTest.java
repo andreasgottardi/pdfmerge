@@ -27,8 +27,8 @@ class CommandLineParserTest {
 		//@formatter:off
 		String[] params = new String[] {
 				"-s", "src/test/resources",
-				// "-a", "e;e1.pdf;2",
-				"-a", "f;e2.pdf;field1=value1",
+				"-a", "e;e1.pdf;2",
+				"-a", "f;e2.pdf;name=CONV04711,year=2021",
 				"-d", "src/test/resources",
 				"-f", "goal.pdf"};
 		//@formatter:on

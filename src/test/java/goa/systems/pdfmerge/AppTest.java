@@ -19,7 +19,7 @@ class AppTest {
 		String[] params = new String[] {
 				"-s", "src/test/resources",
 				"-a", "e;e1.pdf;2",
-				"-a", "f;e2.pdf;field1=Hugo1234",
+				"-a", "f;e2.pdf;name=CONV04711,year=2021",
 				"-d", new File(System.getProperty("user.home"),"Destkop").getAbsolutePath(),
 				"-f", "goal.pdf"};
 		//@formatter:on
