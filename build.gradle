@@ -10,8 +10,8 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    implementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    runtimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     implementation 'org.junit.platform:junit-platform-commons:1.7.0'
     implementation 'org.apache.pdfbox:pdfbox:2.0.22'
     implementation 'org.slf4j:slf4j-api:1.7.30'
@@ -34,10 +34,25 @@ jar {
 			'Main-Class': 'goa.systems.pdfmerge.App'
 		)
 	}
-	
-	from {
-		configurations.runtimeClasspath.collect {
-			it.isDirectory() ? it : zipTree(it)
-		}
-	}
+}
+
+task copyRuntimeLibs(type: Copy, group: 'build', description: 'Exports dependencies.') {
+    dependsOn jar
+	into "${buildDir}/libs"
+	from configurations.runtimeClasspath
+}
+
+
+
+task copyTestData(type: Copy, group: 'build', description: 'Exports dependencies.') {
+    dependsOn copyRuntimeLibs
+    from file("src/test/resources")
+    into file("$buildDir/testdata")
+}
+
+task generateRunBat(group: 'build', description: 'Generates a example executable.')  {
+    dependsOn copyTestData
+    doLast {
+        new File("$buildDir/run.bat").text = '@echo off\r\njava -Dlogdir=log -cp libs\\* goa.systems.pdfmerge.App -s "testdata" -a "e;e1.pdf;1" -a "e;e1.pdf;2" -a "f;e2.pdf;field1=My name is" -d "." -f "goal.pdf"'
+    }
 }

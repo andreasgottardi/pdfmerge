@@ -26,15 +26,38 @@ public class ExtractAction extends PdfAction {
 	@Override
 	public void apply(File dest) {
 		File file = new File(this.filename);
+
+		PDDocument document = null;
+		PDDocument desiredpage = null;
+
 		try {
-			PDDocument document = PDDocument.load(file);
+			document = PDDocument.load(file);
 			Splitter splitter = new Splitter();
 			List<PDDocument> pages = splitter.split(document);
-			PDDocument desiredpage = pages.get(pagenumber - 1);
+			desiredpage = pages.get(pagenumber - 1);
 			desiredpage.save(dest);
-			document.close();
+			for (PDDocument page : pages) {
+				page.close();
+			}
 		} catch (IOException e) {
 			logger.error("Error in pdf extraction.", e);
+		} finally {
+			if (document != null) {
+				logger.debug("Closing document {}", document);
+				try {
+					document.close();
+				} catch (IOException e) {
+					logger.error("Error_occured.", e);
+				}
+			}
+			if (desiredpage != null) {
+				logger.debug("Closing document {}", document);
+				try {
+					desiredpage.close();
+				} catch (IOException e) {
+					logger.error("Error_occured.", e);
+				}
+			}
 		}
 	}
 }

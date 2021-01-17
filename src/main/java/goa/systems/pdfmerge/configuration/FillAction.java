@@ -28,8 +28,9 @@ public class FillAction extends PdfAction {
 	@Override
 	public void apply(File dest) {
 		File file = new File(this.filename);
+		PDDocument document = null;
 		try {
-			PDDocument document = PDDocument.load(file);
+			document = PDDocument.load(file);
 			PDDocumentCatalog docCatalog = document.getDocumentCatalog();
 			PDAcroForm acroForm = docCatalog.getAcroForm();
 			for (Map.Entry<String, String> entry : this.values.entrySet()) {
@@ -39,9 +40,17 @@ public class FillAction extends PdfAction {
 				}
 			}
 			document.save(dest);
-			document.close();
 		} catch (IOException e) {
 			logger.error("Error in pdf filling.", e);
+		} finally {
+			if (document != null) {
+				logger.debug("Closing document {}", document);
+				try {
+					document.close();
+				} catch (IOException e) {
+					logger.error("Error_occured.", e);
+				}
+			}
 		}
 	}
 }
