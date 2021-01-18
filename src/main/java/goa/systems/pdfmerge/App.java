@@ -30,8 +30,14 @@ public class App {
 	public static void main(String[] args) {
 		CommandLineParser clp = new CommandLineParser();
 		Configuration c = clp.parseCommandline(args);
-		App a = new App();
-		a.execute(c);
+		if (c != null) {
+			App a = new App();
+			a.execute(c);
+		} else {
+			logger.error("Error: Configuration error. Not all required values are provided.");
+			logger.error("Use either '-j' with a json file specified or a combination of ");
+			logger.error("'-s' '-a' '-d' '-f'. '-a' can occur mutliple times.");
+		}
 	}
 
 	public boolean execute(Configuration c) {
