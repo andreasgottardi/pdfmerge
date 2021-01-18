@@ -1,5 +1,9 @@
 package goa.systems.pdfmerge.configuration;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -8,26 +12,147 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Splitter;
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+
+import goa.systems.pdfmerge.configuration.json.JsonAction;
+import goa.systems.pdfmerge.configuration.json.JsonConfiguration;
 
 public class CommandLineParser {
 
 	private static final Logger logger = LoggerFactory.getLogger(CommandLineParser.class);
 
 	public Configuration parseCommandline(String[] args) {
+		Configuration c = null;
+
+		if (args.length == 2 && "-j".compareTo(args[0]) == 0) {
+			c = loadJsonBasedConfiguration(args);
+		} else {
+			c = loadParamBasedConfiguration(args);
+		}
+		if (c != null) {
+			c.complete();
+			return c;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * 
+	 * @param args
+	 * @return null, if not all values are set. Else configuration object.
+	 */
+	private Configuration loadParamBasedConfiguration(String[] args) {
+
 		Configuration c = new Configuration();
+		boolean[] crtlvals = { false, false, false, false };
 		for (int i = 0; i < args.length; i++) {
-			if ("-a".compareTo(args[i]) == 0) {
-				c.addAction(loadCommandLineAction(args[i + 1]));
-			} else if ("-s".compareTo(args[i]) == 0) {
+
+			if ("-s".compareTo(args[i]) == 0) {
 				c.setSourcedir(args[i + 1]);
+				crtlvals[0] = true;
+			} else if ("-a".compareTo(args[i]) == 0) {
+				c.addAction(loadCommandLineAction(args[i + 1]));
+				crtlvals[1] = true;
 			} else if ("-d".compareTo(args[i]) == 0) {
 				c.setDestdir(args[i + 1]);
+				crtlvals[2] = true;
 			} else if ("-f".compareTo(args[i]) == 0) {
 				c.setDestfilename(args[i + 1]);
+				crtlvals[3] = true;
 			}
 		}
-		c.complete();
+		return requiredValuesSetOnCommandline(crtlvals) ? c : null;
+	}
+
+	private boolean requiredValuesSetOnCommandline(boolean[] values) {
+		boolean retval = true;
+		for (boolean b : values) {
+			retval &= b;
+		}
+		return retval;
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param args
+	 * @return null in case of error. Else configuration.
+	 */
+	public Configuration loadJsonBasedConfiguration(JsonConfiguration jc) {
+
+		Configuration c = new Configuration();
+
+		try {
+			c.setDestdir(jc.getDestinationfolder());
+			c.setDestfilename(jc.getDestinationfile());
+			c.setSourcedir(jc.getSourcefolder());
+
+			for (JsonAction ja : jc.getActions()) {
+				PdfAction pa;
+				switch (ja.getAction()) {
+				case "fill":
+					FillAction fa = new FillAction();
+					fa.setValues(parseParameters(ja.getParameters()));
+					pa = fa;
+					break;
+				case "extract":
+					ExtractAction ea = new ExtractAction();
+					ea.setPagenumber(Integer.parseInt(ja.getParameters()));
+					pa = ea;
+					break;
+				default:
+					pa = null;
+					break;
+				}
+				if (pa != null) {
+					pa.setFilename(ja.getFilename());
+				}
+				c.addAction(pa);
+			}
+
+		} catch (JsonSyntaxException | JsonIOException e) {
+			logger.error("Err", e);
+			return null;
+		}
 		return c;
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param args
+	 * @return null in case of error. Else configuration.
+	 */
+	public Configuration loadJsonBasedConfiguration(String[] args) {
+		try {
+			JsonConfiguration jc = new Gson().fromJson(new InputStreamReader(new FileInputStream(new File(args[1]))),
+					JsonConfiguration.class);
+			return loadJsonBasedConfiguration(jc);
+		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
+			logger.error("Err", e);
+			return null;
+		}
+
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param args
+	 * @return null in case of error. Else configuration.
+	 */
+	public Configuration loadJsonBasedConfiguration(String json) {
+		try {
+			JsonConfiguration jc = new Gson().fromJson(json, JsonConfiguration.class);
+			return loadJsonBasedConfiguration(jc);
+		} catch (JsonSyntaxException | JsonIOException e) {
+			logger.error("Err", e);
+			return null;
+		}
+
 	}
 
 	public PdfAction loadCommandLineAction(String parameter) {

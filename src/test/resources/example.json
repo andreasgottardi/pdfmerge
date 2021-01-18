@@ -1,0 +1,17 @@
+{
+	"sourcefolder": "examples",
+	"destinationfolder": "atemptdir",
+	"destinationfile": "goal.pdf",
+	"actions": [
+		{
+			"action": "extract",
+			"filename": "example1.pdf",
+			"parameters": "1"
+		},
+		{
+			"action": "fill",
+			"filename": "example2.pdf",
+			"parameters": "key1=val1,key2=val2"
+		}
+	]
+}
