@@ -26,7 +26,9 @@ public class CommandLineParser {
 	public Configuration parseCommandline(String[] args) {
 		Configuration c = null;
 
-		if (args.length == 2 && "-j".compareTo(args[0]) == 0) {
+		if (args.length == 1 && "-g".compareTo(args[0]) == 0) {
+			c = loadPlainConfiguration();
+		} else if (args.length == 2 && "-j".compareTo(args[0]) == 0) {
 			c = loadJsonBasedConfiguration(args);
 		} else {
 			c = loadParamBasedConfiguration(args);
@@ -153,6 +155,16 @@ public class CommandLineParser {
 			return null;
 		}
 
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param args
+	 * @return null in case of error. Else configuration.
+	 */
+	public Configuration loadPlainConfiguration() {
+		return new Configuration();
 	}
 
 	public PdfAction loadCommandLineAction(String parameter) {

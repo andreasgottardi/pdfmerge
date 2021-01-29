@@ -27,12 +27,14 @@ public class App {
 
 	private static final Logger logger = LoggerFactory.getLogger(App.class);
 
+	private Configuration configuration;
+
 	public static void main(String[] args) {
 		CommandLineParser clp = new CommandLineParser();
 		Configuration c = clp.parseCommandline(args);
 		if (c != null) {
-			App a = new App();
-			a.execute(c);
+			App a = new App(c);
+			a.execute();
 		} else {
 			logger.error("Error: Configuration error. Not all required values are provided.");
 			logger.error("Use either '-j' with a json file specified or a combination of ");
@@ -40,19 +42,23 @@ public class App {
 		}
 	}
 
-	public boolean execute(Configuration c) {
-		logger.debug("Applying {} actions.", c.getActions().size());
+	public App(Configuration configuration) {
+		this.configuration = configuration;
+	}
+
+	public boolean execute() {
+		logger.debug("Applying {} actions.", this.configuration.getActions().size());
 		File workdir = getTemporaryWorkdir();
 		workdir.mkdirs();
 		int i = 0;
 		List<Integer> sorteditems = new ArrayList<>();
-		for (PdfAction pa : c.getActions()) {
+		for (PdfAction pa : this.configuration.getActions()) {
 			pa.apply(new File(workdir, Integer.toString(i)));
 			sorteditems.add(i);
 			i++;
 		}
 
-		merge(sorteditems, workdir, new File(c.getDestdir(), c.getDestfilename()));
+		merge(sorteditems, workdir, new File(this.configuration.getDestdir(), this.configuration.getDestfilename()));
 		deleteDir(workdir);
 		return true;
 	}

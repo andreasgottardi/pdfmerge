@@ -27,13 +27,13 @@ class AppTest {
 		CommandLineParser clp = new CommandLineParser();
 		Configuration c = clp.parseCommandline(params);
 		assertNotNull(c);
-		App a = new App();
-		assertTrue(a.execute(c));
+		App a = new App(c);
+		assertTrue(a.execute());
 	}
 
 	@Test
 	void testTemporaryWorkDir() {
-		App a = new App();
+		App a = new App(null);
 		File f = a.getTemporaryWorkdir();
 		assertNotNull(f);
 		assertFalse(f.exists());
