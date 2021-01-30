@@ -1,4 +1,4 @@
-package goa.systems.pdfmerge.configuration.json;
+package goa.systems.pdfmerge.model;
 
 import java.util.List;
 

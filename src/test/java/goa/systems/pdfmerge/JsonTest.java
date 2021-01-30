@@ -12,10 +12,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
-import goa.systems.pdfmerge.configuration.CommandLineParser;
-import goa.systems.pdfmerge.configuration.Configuration;
-import goa.systems.pdfmerge.configuration.json.JsonAction;
-import goa.systems.pdfmerge.configuration.json.JsonConfiguration;
+import goa.systems.pdfmerge.control.CommandLineParser;
+import goa.systems.pdfmerge.model.Configuration;
+import goa.systems.pdfmerge.model.JsonAction;
+import goa.systems.pdfmerge.model.JsonConfiguration;
 
 class JsonTest {
 

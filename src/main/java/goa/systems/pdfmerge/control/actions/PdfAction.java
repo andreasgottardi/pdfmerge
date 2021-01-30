@@ -1,4 +1,4 @@
-package goa.systems.pdfmerge.configuration;
+package goa.systems.pdfmerge.control.actions;
 
 import java.io.File;
 

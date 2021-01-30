@@ -8,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-import goa.systems.pdfmerge.configuration.CommandLineParser;
-import goa.systems.pdfmerge.configuration.Configuration;
+import goa.systems.pdfmerge.control.CommandLineParser;
+import goa.systems.pdfmerge.model.Configuration;
 
 class CommandLineParserTest {
 

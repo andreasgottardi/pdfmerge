@@ -8,10 +8,11 @@ import java.io.File;
 
 import org.junit.jupiter.api.Test;
 
-import goa.systems.pdfmerge.configuration.CommandLineParser;
-import goa.systems.pdfmerge.configuration.Configuration;
+import goa.systems.pdfmerge.control.CommandLineParser;
+import goa.systems.pdfmerge.control.Control;
+import goa.systems.pdfmerge.model.Configuration;
 
-class AppTest {
+class PdfMergeTest {
 
 	@Test
 	void test() {
@@ -27,13 +28,13 @@ class AppTest {
 		CommandLineParser clp = new CommandLineParser();
 		Configuration c = clp.parseCommandline(params);
 		assertNotNull(c);
-		App a = new App(c);
+		Control a = new Control(c);
 		assertTrue(a.execute());
 	}
 
 	@Test
 	void testTemporaryWorkDir() {
-		App a = new App(null);
+		Control a = new Control(null);
 		File f = a.getTemporaryWorkdir();
 		assertNotNull(f);
 		assertFalse(f.exists());

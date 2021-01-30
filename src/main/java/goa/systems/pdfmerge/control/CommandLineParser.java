@@ -1,4 +1,4 @@
-package goa.systems.pdfmerge.configuration;
+package goa.systems.pdfmerge.control;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,8 +16,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
-import goa.systems.pdfmerge.configuration.json.JsonAction;
-import goa.systems.pdfmerge.configuration.json.JsonConfiguration;
+import goa.systems.pdfmerge.control.actions.ExtractAction;
+import goa.systems.pdfmerge.control.actions.FillAction;
+import goa.systems.pdfmerge.control.actions.PdfAction;
+import goa.systems.pdfmerge.model.Configuration;
+import goa.systems.pdfmerge.model.JsonAction;
+import goa.systems.pdfmerge.model.JsonConfiguration;
 
 public class CommandLineParser {
 

@@ -1,8 +1,10 @@
-package goa.systems.pdfmerge.configuration;
+package goa.systems.pdfmerge.model;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import goa.systems.pdfmerge.control.actions.PdfAction;
 
 public class Configuration {
 

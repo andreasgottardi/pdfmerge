@@ -1,4 +1,4 @@
-package goa.systems.pdfmerge.configuration;
+package goa.systems.pdfmerge.control.actions;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +34,7 @@ public class ExtractAction extends PdfAction {
 			document = PDDocument.load(file);
 			Splitter splitter = new Splitter();
 			List<PDDocument> pages = splitter.split(document);
+			logger.debug("Extracting page {}.", pagenumber);
 			desiredpage = pages.get(pagenumber - 1);
 			desiredpage.save(dest);
 			for (PDDocument page : pages) {

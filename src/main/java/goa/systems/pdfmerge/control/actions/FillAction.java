@@ -1,4 +1,4 @@
-package goa.systems.pdfmerge.configuration;
+package goa.systems.pdfmerge.control.actions;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +36,7 @@ public class FillAction extends PdfAction {
 			for (Map.Entry<String, String> entry : this.values.entrySet()) {
 				PDField field = acroForm.getField(entry.getKey());
 				if (field != null) {
+					logger.debug("Setting value {} for field {}.", entry.getValue(), entry.getKey());
 					field.setValue(entry.getValue());
 				}
 			}
