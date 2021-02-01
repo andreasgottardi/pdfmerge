@@ -22,7 +22,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'goa.systems.pdfmerge.App'
+    mainClass = 'goa.systems.pdfmerge.PdfMerge'
 }
 
 tasks.named('test') {
@@ -32,7 +32,7 @@ tasks.named('test') {
 jar {
 	manifest {
 		attributes (
-			'Main-Class': 'goa.systems.pdfmerge.App'
+			'Main-Class': 'goa.systems.pdfmerge.PdfMerge'
 		)
 	}
 }

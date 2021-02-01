@@ -6,8 +6,8 @@ package goa.systems.pdfmerge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import goa.systems.pdfmerge.control.Control;
 import goa.systems.pdfmerge.control.CommandLineParser;
+import goa.systems.pdfmerge.control.Control;
 import goa.systems.pdfmerge.model.Configuration;
 
 public class PdfMerge {
@@ -19,7 +19,9 @@ public class PdfMerge {
 		Configuration c = clp.parseCommandline(args);
 		if (c != null) {
 			Control a = new Control(c);
-			a.execute();
+			if (!c.isIsgui()) {
+				a.execute();
+			}
 		} else {
 			logger.error("Error: Configuration error. Not all required values are provided.");
 			logger.error("Use either '-j' with a json file specified or a combination of ");

@@ -14,8 +14,14 @@ public class Configuration {
 	private String destdir;
 	private String destfilename;
 
+	private boolean isgui;
+
 	public Configuration() {
 		this.actions = new ArrayList<>();
+		this.sourcedir = "";
+		this.destdir = "";
+		this.destfilename = "";
+		this.isgui = false;
 	}
 
 	public List<PdfAction> getActions() {
@@ -58,5 +64,13 @@ public class Configuration {
 		for (PdfAction pdfAction : actions) {
 			pdfAction.setFilename(new File(sourcedir, pdfAction.getFilename()).getPath());
 		}
+	}
+
+	public boolean isIsgui() {
+		return isgui;
+	}
+
+	public void setIsgui(boolean isgui) {
+		this.isgui = isgui;
 	}
 }

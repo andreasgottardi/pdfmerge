@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import goa.systems.pdfmerge.control.actions.PdfAction;
 import goa.systems.pdfmerge.model.Configuration;
+import goa.systems.pdfmerge.view.View;
 
 public class Control {
 
@@ -25,8 +26,13 @@ public class Control {
 
 	private Configuration configuration;
 
+	private View view;
+
 	public Control(Configuration configuration) {
 		this.configuration = configuration;
+		if (this.configuration.isIsgui()) {
+			this.view = new View(this, this.configuration);
+		}
 	}
 
 	/**
