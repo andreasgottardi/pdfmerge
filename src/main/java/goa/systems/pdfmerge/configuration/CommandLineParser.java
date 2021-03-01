@@ -100,7 +100,7 @@ public class CommandLineParser {
 					break;
 				case "extract":
 					ExtractAction ea = new ExtractAction();
-					ea.setPagenumber(Integer.parseInt(ja.getParameters()));
+					ea.setPagenumber(ja.getParameters());
 					pa = ea;
 					break;
 				default:
@@ -127,6 +127,7 @@ public class CommandLineParser {
 	 * @return null in case of error. Else configuration.
 	 */
 	public Configuration loadJsonBasedConfiguration(String[] args) {
+
 		try {
 			JsonConfiguration jc = new Gson().fromJson(new InputStreamReader(new FileInputStream(new File(args[1]))),
 					JsonConfiguration.class);
@@ -135,7 +136,6 @@ public class CommandLineParser {
 			logger.error("Err", e);
 			return null;
 		}
-
 	}
 
 	/**
@@ -172,11 +172,9 @@ public class CommandLineParser {
 			case 1:
 				filename = string;
 				break;
-
 			case 2:
 				parameters = string;
 				break;
-
 			default:
 				break;
 			}
@@ -195,7 +193,7 @@ public class CommandLineParser {
 		case "e":
 			ExtractAction ea = new ExtractAction();
 			ea.setFilename(filename);
-			ea.setPagenumber(Integer.parseInt(parameters));
+			ea.setPagenumber(parameters);
 			pa = ea;
 			break;
 		default:

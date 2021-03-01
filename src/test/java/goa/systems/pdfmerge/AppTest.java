@@ -14,7 +14,7 @@ import goa.systems.pdfmerge.configuration.Configuration;
 class AppTest {
 
 	@Test
-	void test() {
+	void testParam() {
 		//@formatter:off
 		String[] params = new String[] {
 				"-s", "src/test/resources",
@@ -22,6 +22,19 @@ class AppTest {
 				"-a", "f;e2.pdf;name=CONV04711,year=2021",
 				"-d", new File(System.getProperty("user.home"),"Destkop").getAbsolutePath(),
 				"-f", "goal.pdf"};
+		//@formatter:on
+
+		CommandLineParser clp = new CommandLineParser();
+		Configuration c = clp.parseCommandline(params);
+		assertNotNull(c);
+		App a = new App();
+		assertTrue(a.execute(c));
+	}
+
+	@Test
+	void testJson() {
+		//@formatter:off
+		String[] params = new String[] {"-j", "src/test/resources/example.json"};
 		//@formatter:on
 
 		CommandLineParser clp = new CommandLineParser();

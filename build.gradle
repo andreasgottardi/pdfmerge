@@ -45,8 +45,6 @@ task copyRuntimeLibs(type: Copy, group: 'build', description: 'Exports dependenc
 	from configurations.runtimeClasspath
 }
 
-
-
 task copyTestData(type: Copy, group: 'build', description: 'Exports dependencies.') {
     dependsOn copyRuntimeLibs
     from file("src/test/resources")
