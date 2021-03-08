@@ -100,7 +100,7 @@ public class CommandLineParser {
 					break;
 				case "extract":
 					ExtractAction ea = new ExtractAction();
-					ea.setPagenumber(ja.getParameters());
+					ea.setRange(ja.getParameters());
 					pa = ea;
 					break;
 				default:
@@ -193,7 +193,7 @@ public class CommandLineParser {
 		case "e":
 			ExtractAction ea = new ExtractAction();
 			ea.setFilename(filename);
-			ea.setPagenumber(parameters);
+			ea.setRange(parameters);
 			pa = ea;
 			break;
 		default:

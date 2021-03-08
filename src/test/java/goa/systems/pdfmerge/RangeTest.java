@@ -14,7 +14,7 @@ class RangeTest {
 	void test() {
 
 		ExtractAction ea = new ExtractAction();
-		ea.setPagenumber("1,2,7-10,4");
+		ea.setRange("1,2,7-10,4");
 		List<Integer> pages = ea.generatePages();
 		assertEquals(7, pages.size());
 	}

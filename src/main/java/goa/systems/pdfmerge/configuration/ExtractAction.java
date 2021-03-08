@@ -17,11 +17,28 @@ public class ExtractAction extends PdfAction {
 
 	private String range;
 
-	public String getPagenumber() {
+	/**
+	 * Returns the range definition as string.
+	 * 
+	 * @return Range definition as string.
+	 */
+	public String getRange() {
 		return range;
 	}
 
-	public void setPagenumber(String range) {
+	/**
+	 * Sets the range string. This supports multiple and mixed formats.<br/>
+	 * <br/>
+	 * <b>Examples</b>
+	 * <ul>
+	 * <li>1,3,5,7</li>
+	 * <li>1-3</li>
+	 * <li>1,2-5,7,9,10-12</li>
+	 * </ul>
+	 * 
+	 * @param range Range definition as string (see examples)
+	 */
+	public void setRange(String range) {
 		this.range = range;
 	}
 
@@ -30,8 +47,6 @@ public class ExtractAction extends PdfAction {
 		File file = new File(this.filename);
 
 		PDDocument document = null;
-		PDDocument desiredpage = null;
-
 		List<Integer> pagelist = generatePages();
 
 		try (PDDocument destination = new PDDocument()) {
@@ -40,9 +55,7 @@ public class ExtractAction extends PdfAction {
 			List<PDDocument> pages = splitter.split(document);
 
 			for (Integer pagenum : pagelist) {
-				desiredpage = pages.get(pagenum);
-				destination.addPage(desiredpage.getPage(0));
-				destination.save(dest);
+				extractPage(file, destination, pages, pagenum);
 			}
 			destination.save(dest);
 			for (PDDocument page : pages) {
@@ -59,19 +72,27 @@ public class ExtractAction extends PdfAction {
 					logger.error("Error_occured.", e);
 				}
 			}
-			if (desiredpage != null) {
-				logger.debug("Closing document {}", document);
-				try {
-					desiredpage.close();
-				} catch (IOException e) {
-					logger.error("Error_occured.", e);
-				}
-			}
+		}
+	}
+
+	private void extractPage(File source, PDDocument destination, List<PDDocument> pages, Integer pagenum) {
+		try {
+			PDDocument desiredpage = pages.get(pagenum);
+			destination.addPage(desiredpage.getPage(0));
+		} catch (IndexOutOfBoundsException e) {
+			logger.warn("Page {} was not extractable from document {}", pagenum, source.getAbsolutePath());
 		}
 	}
 
 	/**
-	 * Takes the stored parameter and generates a array of pages.
+	 * Takes the stored parameter and generates a array of pages.<br/>
+	 * <br/>
+	 * <b>Examples</b>
+	 * <ul>
+	 * <li>1,3,5,7 would turn into [1,3,5,7]</li>
+	 * <li>1-3 would turn into [1,2,3]</li>
+	 * <li>1,2-5,7,10-12 would turn into [1,2,3,4,5,7,10,11,12]</li>
+	 * </ul>
 	 * 
 	 * @return Integer list of pages.
 	 */
